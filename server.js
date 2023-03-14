@@ -39,6 +39,77 @@ app.get("/", async (req, res) => {
     }
 });
 
+app.get("/watching", async (req, res) => {
+    try {
+        connection.query("SELECT * FROM tb_anime WHERE status = 'watching'", (err, result, field) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send();
+            }
+            else {
+                return res.status(200).json(result);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.get("/watched", async (req, res) => {
+    try {
+        connection.query("SELECT * FROM tb_anime WHERE status = 'watched'", (err, result, field) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send();
+            }
+            else {
+                return res.status(200).json(result);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.get("/willwatch", async (req, res) => {
+    try {
+        connection.query("SELECT * FROM tb_anime WHERE status = 'willwatch'", (err, result, field) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send();
+            }
+            else {
+                return res.status(200).json(result);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.get("/unwatch", async (req, res) => {
+    try {
+        connection.query("SELECT * FROM tb_anime WHERE status = 'unwatch'", (err, result, field) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send();
+            }
+            else {
+                return res.status(200).json(result);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.use(express.static('public')); 
+app.use('/images', express.static('images'));
+
 app.listen(8000, () => {
     console.log("Server is Running on http://localhost:8000");
 });
