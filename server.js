@@ -1,8 +1,13 @@
 const express = require('express');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost.com',
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
+}));
 
 const connection = mysql.createConnection({
     'host': "localhost",
@@ -22,7 +27,7 @@ connection.connect((err) => {
     }
 });
 
-app.get("/", async (req, res) => {
+app.get("/", cors(), async (req, res) => {
     try {
         connection.query("SELECT * FROM tb_anime WHERE 1", (err, result, field) => {
             if (err) {
@@ -39,7 +44,7 @@ app.get("/", async (req, res) => {
     }
 });
 
-app.get("/watching", async (req, res) => {
+app.get("/watching", cors(), async (req, res) => {
     try {
         connection.query("SELECT * FROM tb_anime WHERE status = 'watching'", (err, result, field) => {
             if (err) {
@@ -56,7 +61,7 @@ app.get("/watching", async (req, res) => {
     }
 });
 
-app.get("/watched", async (req, res) => {
+app.get("/watched", cors(), async (req, res) => {
     try {
         connection.query("SELECT * FROM tb_anime WHERE status = 'watched'", (err, result, field) => {
             if (err) {
@@ -73,7 +78,7 @@ app.get("/watched", async (req, res) => {
     }
 });
 
-app.get("/willwatch", async (req, res) => {
+app.get("/willwatch", cors(), async (req, res) => {
     try {
         connection.query("SELECT * FROM tb_anime WHERE status = 'willwatch'", (err, result, field) => {
             if (err) {
@@ -90,7 +95,7 @@ app.get("/willwatch", async (req, res) => {
     }
 });
 
-app.get("/unwatch", async (req, res) => {
+app.get("/unwatch", cors(), async (req, res) => {
     try {
         connection.query("SELECT * FROM tb_anime WHERE status = 'unwatch'", (err, result, field) => {
             if (err) {
