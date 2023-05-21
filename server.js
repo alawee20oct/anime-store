@@ -112,6 +112,117 @@ app.get("/unwatch", cors(), async (req, res) => {
     }
 });
 
+app.post("/insert", cors(), async (req, res) => {
+    var { name, image, status } = req.body;
+    try {
+        connection.query(
+            "INSERT INTO tb_anime (name, image, status) VALUES (?, ?, ?)",
+            [ name, image, status ],
+            (err, result, field) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                else {
+                    return res.status(200).json(result);
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.get("/select/:id", cors(), async (req, res) => {
+    var id = req.params.id;
+    try {
+        connection.query(
+            "SELECT * FROM tb_anime WHERE id = ?",
+            [ id ],
+            (err, result, field) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                else {
+                    return res.status(200).json(result);
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.get("/search/:search", cors(), async (req, res) => {
+    var search = req.params.search;
+    var key = "%" + search + "%";
+    try {
+        connection.query(
+            "SELECT * FROM tb_anime WHERE name LIKE ?",
+            [ key ],
+            (err, result, field) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                else {
+                    return res.status(200).json(result);
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.patch("/update", cors(), async (req, res) => {
+    var { id, name, image, status } = req.body;
+    try {
+        connection.query(
+            "UPDATE tb_anime SET name = ?, image = ?, status = ? WHERE id = ?",
+            [ name, image, status, id ],
+            (err, result, field) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                else {
+                    return res.status(200).json(result);
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
+app.delete("/delete", cors(), async (req, res) => {
+    var { id } = req.body;
+    try {
+        connection.query(
+            "DELETE FROM tb_anime WHERE id = ?",
+            [ id ],
+            (err, result, field) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                else {
+                    return res.status(200).json(result);
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send();
+    }
+});
+
 app.use(express.static('public')); 
 app.use('/images', express.static('images'));
 
